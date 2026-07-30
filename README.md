@@ -52,7 +52,14 @@ Read [architecture](docs/architecture.md), [model selection](docs/model-selectio
 
 ## Docker
 
-Keep Ollama on the trusted host, then run `docker compose up --build`. The API listens on `http://localhost:8080` and reaches Ollama through `host.docker.internal`. Do not expose this unauthenticated reference API to an untrusted network.
+Keep Ollama on the trusted host, then build and start the API:
+
+```powershell
+docker compose up --build --detach --wait
+Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
+```
+
+The first build downloads the .NET SDK/runtime images and can take several minutes. `--detach --wait` returns control after the container is ready; use `docker compose logs -f api` to follow logs and `docker compose down` to stop it. The API listens on `http://localhost:8080` and reaches Ollama through `host.docker.internal`. Do not expose this unauthenticated reference API to an untrusted network.
 
 ## AI-first workflow
 

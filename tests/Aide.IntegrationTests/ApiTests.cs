@@ -10,8 +10,13 @@ public sealed class ApiTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
     public ApiTests(WebApplicationFactory<Program> factory) => _client = factory.CreateClient();
-    [Fact] public async Task Workflows_ReturnsSupportedWorkflows() =>
+    [Fact]
+    public async Task Workflows_ReturnsSupportedWorkflows() =>
         (await _client.GetFromJsonAsync<string[]>("/api/workflows", TestContext.Current.CancellationToken)).Should().Contain(["Architecture", "SecurityReview", "UnitTests"]);
-    [Fact] public async Task Generate_RejectsUnknownWorkflow() =>
+    [Fact]
+    public async Task Generate_RejectsUnknownWorkflow() =>
         (await _client.PostAsJsonAsync("/api/generate", new { workflow = "magic", goal = "build" }, TestContext.Current.CancellationToken)).StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    [Fact]
+    public async Task Generate_RejectsOversizedContext() =>
+        (await _client.PostAsJsonAsync("/api/generate", new { workflow = "Architecture", goal = "build", context = new string('x', 50_001) }, TestContext.Current.CancellationToken)).StatusCode.Should().Be(HttpStatusCode.BadRequest);
 }

@@ -5,7 +5,7 @@ namespace Aide.Application;
 
 public interface IGenerationService
 {
-    Task<GenerationResult> GenerateAsync(GenerationRequest request, CancellationToken cancellationToken);
+    public Task<GenerationResult> GenerateAsync(GenerationRequest request, CancellationToken cancellationToken);
 }
 
 public sealed class GenerationService(ILocalLanguageModel model, IPromptCatalog prompts) : IGenerationService

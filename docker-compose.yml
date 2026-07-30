@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      Ollama__Endpoint: http://host.docker.internal:11434
+      Ollama__DefaultModel: ${OLLAMA_MODEL:-qwen3:8b}
+    extra_hosts: ["host.docker.internal:host-gateway"]

@@ -1,7 +1,8 @@
-bin/
-obj/
+**/bin/
+**/obj/
 .vs/
-.idea/
 .vscode/
 TestResults/
+*.user
+*.suo
 .env

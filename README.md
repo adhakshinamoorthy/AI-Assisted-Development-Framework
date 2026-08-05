@@ -50,6 +50,8 @@ docs/          Architecture, model selection, testing, troubleshooting, roadmap
 
 Read [architecture](docs/architecture.md), [model selection](docs/model-selection.md), [testing](docs/testing.md), and [troubleshooting](docs/troubleshooting.md).
 
+For governance and operational boundaries, see the [threat model](docs/threat-model.md), [verification scope](docs/verification.md), and [architecture decisions](docs/adr/0001-local-inference-only.md).
+
 ## Docker
 
 Keep Ollama on the trusted host, then build and start the API:

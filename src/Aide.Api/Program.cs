@@ -26,8 +26,12 @@ app.MapGet("/api/workflows", () => TypedResults.Ok(Enum.GetNames<WorkflowKind>()
 app.MapPost("/api/generate", async Task<Results<Ok<GenerationResult>, ValidationProblem>>
     (GenerateDto input, IGenerationService service, CancellationToken cancellationToken) =>
 {
-    if (string.IsNullOrWhiteSpace(input.Goal))
-        return TypedResults.ValidationProblem(new Dictionary<string, string[]> { ["goal"] = ["Goal is required."] });
+    var errors = new Dictionary<string, string[]>();
+    if (string.IsNullOrWhiteSpace(input.Goal)) errors["goal"] = ["Goal is required."];
+    else if (input.Goal.Length > 4_000) errors["goal"] = ["Goal must not exceed 4,000 characters."];
+    if (input.Context?.Length > 50_000) errors["context"] = ["Context must not exceed 50,000 characters."];
+    if (input.Model?.Length > 200) errors["model"] = ["Model must not exceed 200 characters."];
+    if (errors.Count != 0) return TypedResults.ValidationProblem(errors);
     if (!Enum.TryParse<WorkflowKind>(input.Workflow, true, out var workflow))
         return TypedResults.ValidationProblem(new Dictionary<string, string[]> { ["workflow"] = ["Unknown workflow."] });
     var result = await service.GenerateAsync(new(workflow, input.Goal, input.Context, input.Model), cancellationToken);

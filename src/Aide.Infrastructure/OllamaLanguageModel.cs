@@ -20,8 +20,7 @@ public sealed class OllamaLanguageModel(
             new OllamaRequest(selectedModel, $"{systemPrompt}\n\n{userPrompt}", false), cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
-            var body = await response.Content.ReadAsStringAsync(cancellationToken);
-            logger.LogWarning("Ollama returned {StatusCode}: {Body}", response.StatusCode, body);
+            logger.LogWarning("Ollama returned {StatusCode}", response.StatusCode);
             throw new HttpRequestException($"Ollama returned {(int)response.StatusCode}.", null, response.StatusCode);
         }
 

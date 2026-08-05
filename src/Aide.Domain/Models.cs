@@ -24,10 +24,10 @@ public sealed record ModelReply(string Content, string Model, TimeSpan Duration)
 
 public interface ILocalLanguageModel
 {
-    Task<ModelReply> GenerateAsync(string systemPrompt, string userPrompt, string? model, CancellationToken cancellationToken);
+    public Task<ModelReply> GenerateAsync(string systemPrompt, string userPrompt, string? model, CancellationToken cancellationToken);
 }
 
 public interface IPromptCatalog
 {
-    string GetSystemPrompt(WorkflowKind workflow);
+    public string GetSystemPrompt(WorkflowKind workflow);
 }
